@@ -32,3 +32,9 @@ class ListTodo(ListView):
 class DeleteTodo(DeleteView):
     model = TodoModel
     success_url = reverse_lazy("list_todo")
+
+
+def todo_search(request):
+    query=request.GET.get("q")
+    qs=TodoModel.objects.filter(title__contains=query)
+    return render(request,"todo/result.html",context={"todos":qs})
