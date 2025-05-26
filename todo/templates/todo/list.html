@@ -1,0 +1,80 @@
+{% extends 'todo/base.html' %}
+{% block head %}
+{% load static %}
+{% load crispy_forms_tags%}
+
+<link rel="stylesheet" href="{% static 'todo/style.css' %}">
+{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-info">
+    <strong>{{message}}</strong>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <center class="row">
+    <h1><i>__TODO LIST__</i></h1>
+    <hr />
+  </center>
+
+  <div class="row m-4">
+
+    <div class="col-md-8">
+
+      {% for todo in object_list %}
+      <div class="card m-4">
+        <center><b>{{todo.title}}</b></center>
+        <hr />
+        {{todo.author}}
+        <hr />
+
+        {{todo.created_at}}
+        <hr />
+        {{todo.detail}}
+        <br />
+        <br />
+        {% if todo.author == request.user %}
+        <form action="{% url 'delete_todo' todo.pk %}" method="POST"
+          style=" padding-right: 4%; padding-bottom: 3%;">
+          {% csrf_token %}
+          <button value="remove" type="submit" class="btn btn-primary"
+            style="float: right;"><span
+              class="glyphicon glyphicon-trash"></span> &nbsp; remove</button>
+        </form>
+        {% endif %}
+      </div>
+      {% endfor%}
+    </div>
+    <div class="col-md-1"> </div>
+    <div class="col-md-3">
+      <div class="submit_form">
+        <form action="{% url 'create_todo' %}" method="POST">
+          {% csrf_token %}
+          {{form|crispy}}
+          <center>
+            <input type="submit" class="btn btn-success" value="submit" />
+          </center>
+        </form>
+      </div>
+      <div  class="card mt-4">
+        <h2 class="  m-4"><i>__Lasts Recently__</i></h2>
+        {% for todo in last_articles %}
+      <div class="card m-4">
+        <center><b>{{todo.title}}</b></center>
+        <hr />
+        {{todo.author}}
+      </div>
+        {% endfor %}
+
+      </div>
+      
+    </div>
+
+  </div>
+
+  {% endblock %}
