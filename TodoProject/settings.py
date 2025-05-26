@@ -138,3 +138,4 @@ MEDIA_ROOT=BASE_DIR/'uploads'
 
 # login redirect URL
 LOGIN_REDIRECT_URL="list_todo"
+LOGOUT_REDIRECT_URL="login"
